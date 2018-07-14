@@ -3,7 +3,6 @@ import ircbot ircbot.base64
 import ircbot.modules
 import ircbot_external.penis ircbot_external.detect
 import ircbot_external.capital ircbot_external.sieg
-import ircbot_external.karma
 
 open types effects support parsing login
 open parser
