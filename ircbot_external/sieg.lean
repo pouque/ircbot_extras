@@ -19,7 +19,7 @@ def sieg_func (my_nickname : string) (raw_text : io irc_text) :
   date ← (λ x, option.get_or_else x datetime.null_date) <$> effects.get_date,
   text ← raw_text,
   let is_schabbat := match date.weekday with
-  | datetime.day_of_week.monday := tt | _ := ff end,
+  | datetime.day_of_week.sunday := tt | _ := ff end,
   pure $ sieg_func_pure my_nickname is_schabbat text
 
 def sieg (my_nickname : string) : bot_function :=
