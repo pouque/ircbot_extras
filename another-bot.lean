@@ -34,7 +34,7 @@ def my_funcs (acc : account) : list bot_function :=
    ircbot_external.penis.penis,
    ircbot_external.detect.detect,
    ircbot_external.detect.client,
-   ircbot_external.capital.capital,
+   ircbot_external.capital.capital "countries.csv",
    ircbot_external.sieg.sieg my_bot_info.nickname,
    relogin]
 
