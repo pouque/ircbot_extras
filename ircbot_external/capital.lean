@@ -24,12 +24,12 @@ sep_by (Nl >> many' Nl) Country <* (many' Nl)
 def CorrectCapitalCommand : parser string := do
   parsing.tok "\\capital", Word
 
-def lookup (target : string) : list (string × string) → option string
+private def lookup (target : string) : list (string × string) → option string
 | [] := none
 | ((key, value) :: tail) :=
   if key = target then some value else lookup tail
 
-def capital_pure_func (db : list (string × string)) (input : irc_text) : list irc_text :=
+private def capital_func (db : list (string × string)) (input : irc_text) : list irc_text :=
 match input with
 | irc_text.parsed_normal
   { object := some ~nick!ident, type := message.privmsg,
@@ -43,18 +43,17 @@ match input with
 | _ := []
 end
 
-def capital_func (db : string) (input_io : io irc_text) : io (list irc_text) := do
-  buff ← io.fs.read_file db,
-  input ← input_io,
-  match run_string CountriesFormat buff.to_string with
-  | sum.inr v := pure $ capital_pure_func v input
-  | sum.inl er := io.put_str_ln er >> pure []
-  end
-
-def capital (db : string) : bot_function :=
+def capital (db : list (string × string)) : bot_function :=
   { name := "capital",
     syntax := some "\\capital [place]",
     description := "Identifies the capital of something!",
-    func := capital_func db }
+    func := functor.map $ capital_func db }
+
+def read_db (path : string) : io (list (string × string)) := do
+  buff ← io.fs.read_file path,
+  match run_string CountriesFormat buff.to_string with
+  | sum.inr v := pure v
+  | sum.inl er := io.fail $ sformat! "syntax error in {path}:\n{er}"
+  end
 
 end ircbot_external.capital
