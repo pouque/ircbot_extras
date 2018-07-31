@@ -26,7 +26,7 @@ def messages : list irc_text :=
 def my_bot_info : bot_info :=
 bot_info.mk bot_nickname ident server port
 
-def my_funcs (countries : list (string × string)) (acc : account) : list bot_function :=
+def my_funcs (countries : list (string × string)) (greetings : list string) (acc : account) : list bot_function :=
   [modules.ping_pong.ping_pong,
    sasl my_bot_info messages acc,
    modules.print_date.print_date,
@@ -35,20 +35,24 @@ def my_funcs (countries : list (string × string)) (acc : account) : list bot_fu
    ircbot_external.detect.detect,
    ircbot_external.detect.client,
    ircbot_external.capital.capital countries,
-   ircbot_external.sieg.sieg my_bot_info.nickname,
+   ircbot_external.sieg.sieg greetings my_bot_info.nickname,
    relogin]
 
-def my_bot (countries : list (string × string)) (acc : account) : bot :=
-let funcs := my_funcs countries acc in
+def my_bot (countries : list (string × string)) (greetings : list string) (acc : account) : bot :=
+let funcs := my_funcs countries greetings acc in
 { info := my_bot_info,
   funcs := modules.help.help funcs :: funcs }
+
+def countries_file := "countries.csv"
+def greetings_file := "greetings.txt"
 
 def main := do
   --db ← ircbot_external.karma.return_db "bot.sqlite",
   args ← io.cmdline_args,
-  countries ← ircbot_external.capital.read_db "countries.csv",
+  countries ← ircbot_external.capital.read_db countries_file,
+  greetings ← ircbot_external.sieg.read_greetings greetings_file,
   match args with
   | (login :: password :: []) :=
-    mk_bot (my_bot countries $ account.mk login password)
+    mk_bot (my_bot countries greetings $ account.mk login password)
   | _ := io.fail "syntax: lean --run file.lean [login] [password]"
   end

@@ -6,10 +6,6 @@ open types support parser parsing
 namespace ircbot_external.capital
 
 def reserved := ['\n', char.of_nat 13, ',', '"']
-def Nl :=
-ch (char.of_nat 10) <|>
-ch (char.of_nat 13) <|>
-(ch (char.of_nat 13) >> ch (char.of_nat 10))
 def Word := many_char1 $ sat (λ c, list.all reserved (≠ c))
 def WrappedWord := ch '"' >> Word <* ch '"'
 
