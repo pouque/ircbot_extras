@@ -1,6 +1,10 @@
 bonjour
 hola
 guten Tag
+guten Morgen
+guten Abend
+gute Tageszeit
+buon giorno
 ciao
 namaste
 salaam
@@ -15,12 +19,65 @@ salama aleikum
 aloha
 jambo
 habari
-ni hau
+ni hao
+oi
+ola
+tereq
+kutaa
+aluu
+a gutn tog
+mend
+ko na mauri
+salute
+bonghjornu
+ave
+servus
+opa
+allegra
+salut
+bone die
+helele
+ew kata bash
+em kata bash
+gude
+nibula
+bula
+haai
+seavus
+ngurrju mayinpa
 nay hoh
 halo
-dobrij den'
+dobry den
 hello
 vitaju
 alo
 salve
 dia duit
+nyob zoo
+tere
+saluton
+hallo
+hei
+hi
+kumusta
+bonsoir
+kaixo
+zdravo
+moni
+hej
+salom
+ziega-zaga
+sveiks
+schalom
+bonang
+sannu
+hola
+bonayo
+sveiki
+alofa
+ahlan wa sahlan
+gamardzhoba
+ave
+privit
+ossu
+konnichi wa
