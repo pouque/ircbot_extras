@@ -32,6 +32,8 @@ salute
 bonghjornu
 ave
 servus
+GHOP STOP
+SIEG HEIL
 opa
 allegra
 salut
