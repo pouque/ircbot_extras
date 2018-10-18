@@ -84,3 +84,4 @@ ave
 privit
 ossu
 konnichi wa
+GNOME is the best DE
