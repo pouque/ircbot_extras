@@ -6,6 +6,8 @@ namespace ircbot_external.detect
 
 def one := char.of_nat 1
 
+def priv_channel := "#lor"
+
 def CorrectClientCommand : parser string := do
   parsing.tok "\\client", many_char1 parsing.WordChar
 
@@ -17,8 +19,10 @@ def CorrectInfo : parser string := do
 def detect_func : irc_text → list irc_text
 | (irc_text.parsed_normal
    { object := some ~nick!ident, type := message.join,
-     args := _, text := _ }) :=
-  [privmsg nick $ sformat! "{one}VERSION{one}"]
+     args := channel :: _, text := _ }) :=
+  if channel = priv_channel then
+    [privmsg nick $ sformat! "{one}VERSION{one}"]
+  else []
 | (irc_text.parsed_normal
    { object := some ~nick!ident, type := message.notice,
      args := _, text := text }) :=
@@ -26,7 +30,7 @@ def detect_func : irc_text → list irc_text
   | (sum.inr info) :=
     [irc_text.parsed_normal
       { object := none, type := message.privmsg,
-        args := ["#lor"], text := sformat! ":{nick} is using {info}" }]
+        args := [priv_channel], text := sformat! ":{nick} is using {info}" }]
   | _ := []
   end
 | _ := []

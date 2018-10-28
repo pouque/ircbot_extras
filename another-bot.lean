@@ -18,10 +18,12 @@ def bot_nickname : string := "leanbot"
 theorem bot_nickname_is_correct : bot_nickname.front ≠ '#' :=
 begin intros contra, cases contra end
 
+def channels := ["#lor", "#chlor"]
+
 def messages : list irc_text :=
-  [join "#lor",
-   privmsg "#lor" "Problema v tebe, cyka",
-   mode bot_nickname "+B"]
+  join <$> channels ++
+  [ privmsg "#lor" "Problema v tebe, cyka",
+    mode bot_nickname "+B" ]
 
 def my_bot_info : bot_info :=
 bot_info.mk bot_nickname ident server port
