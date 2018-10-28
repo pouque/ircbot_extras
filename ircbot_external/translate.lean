@@ -20,7 +20,7 @@ match input with
   { object := some ~nick!ident, type := message.privmsg,
     args := [subject], text := text } :=
     let convert := λ (s : string),
-      [privmsg "Konsolechka" $ sformat! "!twi {s}"] in
+      [ privmsg "Konsolechka" $ sformat! "!twi {s}" ] in
     let return_wave := io.rand >>= pure ∘ (λ n, sformat! "Wave number {n}!") in
     match run_string CorrectTranslateCommand text with
     | (sum.inl _) := pure []

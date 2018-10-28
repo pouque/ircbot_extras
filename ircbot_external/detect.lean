@@ -18,19 +18,19 @@ def CorrectInfo : parser string := do
 
 def detect_func : irc_text → list irc_text
 | (irc_text.parsed_normal
-   { object := some ~nick!ident, type := message.join,
-     args := channel :: _, text := _ }) :=
+    { object := some ~nick!ident, type := message.join,
+      args := channel :: _, text := _ }) :=
   if channel = priv_channel then
-    [privmsg nick $ sformat! "{one}VERSION{one}"]
+    [ privmsg nick $ sformat! "{one}VERSION{one}" ]
   else []
 | (irc_text.parsed_normal
-   { object := some ~nick!ident, type := message.notice,
-     args := _, text := text }) :=
+    { object := some ~nick!ident, type := message.notice,
+      args := _, text := text }) :=
   match run_string CorrectInfo text with
   | (sum.inr info) :=
-    [irc_text.parsed_normal
-      { object := none, type := message.notice,
-        args := [priv_channel], text := sformat! ":{nick} is using {info}" }]
+    [ irc_text.parsed_normal
+      { type := message.notice, args := [priv_channel],
+        text := sformat! ":{nick} is using {info}" } ]
   | _ := []
   end
 | _ := []
@@ -47,7 +47,7 @@ def client_func : irc_text → list irc_text
       args := _, text := text }) :=
   match run_string CorrectClientCommand text with
   | (sum.inr nick) :=
-    [privmsg nick $ sformat! "{one}VERSION{one}"]
+    [ privmsg nick $ sformat! "{one}VERSION{one}" ]
   | _ := []
   end
 | _ := []

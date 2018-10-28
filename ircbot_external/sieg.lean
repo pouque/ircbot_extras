@@ -9,12 +9,16 @@ end list
 
 namespace ircbot_external.sieg
 
+def trusted_bots := [ "dim13", "Netherlands", "Qubick", "jircbot" ]
+
 def sieg_func_pure (my_nickname : string) (greeting : string) : irc_text → list irc_text
 | (irc_text.parsed_normal
    { object := some ~nick!ident, type := message.join,
      args := channel :: _, text := _ }) :=
-  if nick ≠ my_nickname then
-    [privmsg channel $ sformat! "{nick}, {greeting}! o/"]
+  if nick ∈ trusted_bots then
+  [ privmsg channel $ sformat! "Alarm! Bot ITC! {nick} is bot!" ]
+  else if nick ≠ my_nickname then
+  [ privmsg channel $ sformat! "{nick}, {greeting}! o/" ]
   else []
 | _ := []
 

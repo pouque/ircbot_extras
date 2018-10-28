@@ -33,7 +33,7 @@ match input with
   match run_string CorrectCapitalCommand text with
   | sum.inr place :=
     let answer := option.get_or_else (lookup place db) "I don't know." in
-    [privmsg subject answer]
+    [ privmsg subject answer ]
   | sum.inl _ := []
   end
 | _ := []

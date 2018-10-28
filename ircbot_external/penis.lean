@@ -7,6 +7,9 @@ namespace ircbot_external.penis
 def CorrectPenisCommand : parser string := do
   parsing.tok "\\penis", many_char1 parsing.WordChar
 
+def minimal_length := 8
+def maximal_length := 14
+
 def penis_func (input : irc_text) : list irc_text :=
 match input with
 | irc_text.parsed_normal
@@ -14,8 +17,11 @@ match input with
     args := [subject], text := text } :=
     match run_string CorrectPenisCommand text with
     | (sum.inr nick) :=
-      let length := 8 + (list.foldl (+) 0 (list.map char.to_nat nick.to_list)) % 14 in
-      [privmsg subject $ sformat! "{nick} has {length} cm"]
+      let length :=
+      minimal_length +
+        (list.foldl (+) 0 $ char.to_nat <$> nick.to_list) %
+        maximal_length in
+      [ privmsg subject $ sformat! "{nick} has {length} cm" ]
     | _ := []
     end
 | _ := []
