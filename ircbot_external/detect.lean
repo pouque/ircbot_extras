@@ -29,7 +29,7 @@ def detect_func : irc_text → list irc_text
   match run_string CorrectInfo text with
   | (sum.inr info) :=
     [irc_text.parsed_normal
-      { object := none, type := message.privmsg,
+      { object := none, type := message.notice,
         args := [priv_channel], text := sformat! ":{nick} is using {info}" }]
   | _ := []
   end
