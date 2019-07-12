@@ -9,9 +9,9 @@ str "http://" >> pure "http://" <|>
 str "https://" >> pure "https://"
 
 def Url : parser string := do
-(++) <$> Scheme <*> many_char1 parsing.WordChar
+(++) <$> Scheme <*> many_char1 parsing.WordChar <* optional (ch '.')
 
-def delims : list char := [' ', '\t', ',', '.', ';', '|']
+def delims : list char := [' ', '\t', ',', ';', '|']
 
 def minimal_length := 8
 def maximal_length := 14
