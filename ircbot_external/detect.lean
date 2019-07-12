@@ -6,7 +6,7 @@ namespace ircbot_external.detect
 
 def one := char.of_nat 1
 
-def priv_channel := "#lor"
+def priv_channel := "#chlor"
 
 def CorrectClientCommand : parser string := do
   parsing.tok "\\client", many_char1 parsing.WordChar
