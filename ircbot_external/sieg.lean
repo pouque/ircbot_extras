@@ -54,8 +54,3 @@ def read_greetings (path : string) : io (list string) := do
   end
 
 end ircbot_external.sieg
-
-def main : io unit := do
-  greetings ← ircbot_external.sieg.read_greetings "greetings.txt",
-  idx ← io.rand 0 (greetings.length - 1),
-  io.put_str_ln (greetings.get idx)
