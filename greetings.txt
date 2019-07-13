@@ -5,7 +5,8 @@ guten Morgen
 guten Abend
 gute Tageszeit
 buon giorno
-ciao
+ciào
+cia
 नमस्ते
 اَلسَّلَامُ عَلَيْكُمْ‎
 здравствуйте
@@ -13,69 +14,75 @@ ciao
 안녕하세요
 merhaba
 sain bainuu
+jó napot
 szia
 marhaba
 سَلَام
 aloha
 jambo
-habari
 你好
 oi
-ola
-tereq
-kutaa
-aluu
+olá
 a gutn tog
 mend
 ko na mauri
 salute
 bonghjornu
 ave
+Grüßgott
 servus
 ГОП‐СТОП
 SIEG HEIL
-opa
+опа
 allegra
 salut
-bone die
-helele
 ew kata bash
 em kata bash
 gude
-nibula
-bula
-haai
 seavus
 ngurrju mayinpa
 nay hoh
 halo
 добър ден
+dobrý den
+dobar dan
+dzień dobry
+witaj
+cześć
+дзень добры
+добрый день
 hello
 вiтаю
 alo
 salve
 dia duit
 nyob zoo
-salem
+сәлем
+cәлеметсіз бе
+cән бәәцхәнт
+салам
+бирибиэт
+дорообо
 tere
 saluton
 hallo
+hæ
 hei
 hi
 kumusta
 bonsoir
 kaixo
+здраво
 zdravo
-moni
 hej
+ᐊᐃᓐᖓᐃ
+γεια σου
 şalom
 зига-зага
 sveiks
 שָׁלוֹם
-bonang
 sannu
 hola
-bonayo
 sveiki
 alofa
 გამარჯობა
@@ -84,3 +91,9 @@ ave
 押忍
 こんにちは
 GNOME is the best DE
+tungjatjeta
+yo
+ку
+բարև
+Բարեւ
+DIE MOTHERFUCKER DIE DIE MOTHERFUCKER DIE
