@@ -30,11 +30,10 @@ def sieg_func (greetings : list string) (my_nickname : string) (raw_text : io ir
   date ← (λ x, option.get_or_else x datetime.null_date) <$> effects.get_date,
   text ← raw_text,
   greeting ←
-    (io.rand 0 $ greetings.length - 1) >>= pure ∘ greetings.get,
-    --match date.weekday with
-    --| datetime.day_of_week.saturday := pure "шаббат шалом"
-    --| _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ list.get greetings
-    --end,
+    match date.weekday with
+    | datetime.day_of_week.saturday := pure "шаббат шалом"
+    | _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ greetings.get
+    end,
   pure $ sieg_func_pure my_nickname greeting text
 
 def sieg (greetings : list string) (my_nickname : string) : bot_function :=
