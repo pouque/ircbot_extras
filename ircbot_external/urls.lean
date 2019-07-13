@@ -24,7 +24,7 @@ def max_length := 30 * 1024
 def get_page_by_url (url : string) : io string := do
   curl_proc ← io.proc.spawn
     { cmd := "curl",
-      args := [ "--max-time", to_string timeout, "--silent", url ],
+      args := [ "--max-time", to_string timeout, "--silent", "--location", url ],
       stdout := io.process.stdio.piped },
   page ← io.fs.read curl_proc.stdout max_length,
   pure $ buffer.to_string page
@@ -50,9 +50,11 @@ def titles : bot_function :=
       match input with
       | irc_text.parsed_normal
         { object := some object, type := message.privmsg,
-          args := [subject], text := text } := do
-        pages ← sequence $ get_page_by_url <$> get_urls text,
-        pure $ title_notice subject <$> list.filter_map get_title pages
+          args := [subject], text := text } := 
+        if subject.front = '#' then do
+          pages ← sequence $ get_page_by_url <$> get_urls text,
+          pure $ title_notice subject <$> list.filter_map get_title pages
+        else pure []
       | _ := pure []
       end }
 
