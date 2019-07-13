@@ -40,6 +40,7 @@ def my_funcs (countries : list (string × string))
     ircbot_external.detect.client,
     ircbot_external.capital.capital countries,
     ircbot_external.sieg.sieg greetings my_bot_info.nickname,
+    ircbot_external.sieg.gruss greetings my_bot_info.nickname,
     ircbot_external.urls.titles,
     relogin ]
 
