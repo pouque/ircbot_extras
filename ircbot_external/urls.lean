@@ -1,5 +1,5 @@
 import ircbot.types ircbot.support ircbot.parsing
-import data.buffer.parser
+import data.buffer.parser ircbot.unicode
 open types support parser
 
 namespace ircbot_external.urls
@@ -13,23 +13,47 @@ def Url : parser string := do
 
 def delims : list char := [' ', '\t', ',', ';', '|']
 
-def minimal_length := 8
-def maximal_length := 14
+def get_urls (text : string) : list string :=
+list.filter_map
+  (λ word, sum.cases_on (run_string Url word) (λ _, none) some) $
+    text.split (∈ delims)
 
-def get_titles : irc_text → list irc_text
-| (irc_text.parsed_normal
-    { object := some object, type := message.privmsg,
-      args := [subject], text := text }) :=
-    list.filter_map (λ word, match run_string Url word with
-      | sum.inr url := some $ privmsg subject $ sformat! "URL found: {url}"
-      | sum.inl _ := none
-    end) $ text.split (∈ delims)
-| _ := []
+def timeout := 5
+def max_length := 30 * 1024
+
+def get_page_by_url (url : string) : io string := do
+  curl_proc ← io.proc.spawn
+    { cmd := "curl",
+      args := [ "--max-time", to_string timeout, "--silent", url ],
+      stdout := io.process.stdio.piped },
+  page ← io.fs.read curl_proc.stdout max_length,
+  option.rec (io.fail "unicode decode error") pure $ unicode.utf8_to_string page
+
+def get_title_of_tokens : list string → option string
+| (start :: content :: close :: tl) :=
+  if start = "title" ∧ close = "/title" then some content
+  else get_title_of_tokens (content :: close :: tl)
+| (hd :: tl) := get_title_of_tokens tl
+| [] := none
+
+def get_title (page : string) :=
+get_title_of_tokens (page.split (∈ ['<', '>']))
+
+def title_notice (channel : string) (title : string) :=
+notice channel $ sformat! "Title: {title}"
 
 def titles : bot_function :=
-  { name := "titles",
+  { name := "title",
     syntax := none,
-    description := "Returns titles of urls.",
-    func := functor.map get_titles }
+    description := "Returns URL titles.",
+    func := λ raw_input, do input ← raw_input,
+      match input with
+      | irc_text.parsed_normal
+        { object := some object, type := message.privmsg,
+          args := [subject], text := text } := do
+        pages ← sequence $ get_page_by_url <$> get_urls text,
+        pure $ title_notice subject <$> list.filter_map get_title pages
+      | _ := pure []
+      end }
 
 end ircbot_external.urls
