@@ -6,20 +6,20 @@ guten Abend
 gute Tageszeit
 buon giorno
 ciao
-namaste
-salaam
-zdravstvuyte
-ohayo
-ahn-young-ha-se-yo
+नमस्ते
+اَلسَّلَامُ عَلَيْكُمْ‎
+здравствуйте
+お早う
+안녕하세요
 merhaba
 sain bainuu
 szia
 marhaba
-salama aleikum
+سَلَام
 aloha
 jambo
 habari
-ni hao
+你好
 oi
 ola
 tereq
@@ -32,7 +32,7 @@ salute
 bonghjornu
 ave
 servus
-GHOP STOP
+ГОП‐СТОП
 SIEG HEIL
 opa
 allegra
@@ -49,7 +49,7 @@ seavus
 ngurrju mayinpa
 nay hoh
 halo
-dobry den
+добър ден
 hello
 vitaju
 alo
@@ -68,20 +68,19 @@ kaixo
 zdravo
 moni
 hej
-salom
-ziega-zaga
+şalom
+зига-зага
 sveiks
-schalom
+שָׁלוֹם
 bonang
 sannu
 hola
 bonayo
 sveiki
 alofa
-ahlan wa sahlan
-gamardzhoba
+გამარჯობა
 ave
-privit
-ossu
-konnichi wa
+привіт
+押忍
+こんにちは
 GNOME is the best DE

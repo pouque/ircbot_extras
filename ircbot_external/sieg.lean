@@ -30,10 +30,11 @@ def sieg_func (greetings : list string) (my_nickname : string) (raw_text : io ir
   date ← (λ x, option.get_or_else x datetime.null_date) <$> effects.get_date,
   text ← raw_text,
   greeting ←
-    match date.weekday with
-    | datetime.day_of_week.saturday := pure "шаббат шалом"
-    | _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ list.get greetings
-    end,
+    (io.rand 0 $ greetings.length - 1) >>= pure ∘ list.get greetings,
+    --match date.weekday with
+    --| datetime.day_of_week.saturday := pure "шаббат шалом"
+    --| _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ list.get greetings
+    --end,
   pure $ sieg_func_pure my_nickname greeting text
 
 def sieg (greetings : list string) (my_nickname : string) : bot_function :=
@@ -47,7 +48,7 @@ sep_by (Nl >> many' Nl) WordNotNl <* (many' Nl)
 
 def read_greetings (path : string) : io (list string) := do
   buff ← io.fs.read_file path,
-  match run_string GreetingsFormat buff.to_string with
+  match run_string GreetingsFormat (unicode.get_buffer buff) with
   | sum.inr v := pure v
   | sum.inl er := io.fail $ sformat! "syntax error in {path}:\n{er}"
   end
