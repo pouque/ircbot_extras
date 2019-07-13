@@ -31,7 +31,7 @@ def sieg_func (greetings : list string) (my_nickname : string) (raw_text : io ir
   text ← raw_text,
   greeting ←
     match date.weekday with
-    | datetime.day_of_week.saturday := pure "shabbat shalouem"
+    | datetime.day_of_week.saturday := pure "шаббат шалом"
     | _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ list.get greetings
     end,
   pure $ sieg_func_pure my_nickname greeting text
