@@ -27,7 +27,6 @@ def get_page_by_url (url : string) : io string := do
       args := [ "--max-time", to_string timeout, "--silent", url ],
       stdout := io.process.stdio.piped },
   page ← io.fs.read curl_proc.stdout max_length,
-  --option.rec (io.fail "unicode decode error") pure $ unicode.utf8_to_string page
   pure $ buffer.to_string page
 
 def get_title_of_tokens : list string → option string

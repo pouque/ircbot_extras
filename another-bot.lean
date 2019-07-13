@@ -48,7 +48,7 @@ def my_bot (countries : list (string × string))
 let funcs := my_funcs countries greetings acc in
 { info := my_bot_info,
   funcs := modules.help.help funcs :: funcs,
-  unicode_output_fix := ff }
+  unicode_fix := ff }
 
 def countries_file := "countries.csv"
 def greetings_file := "greetings.txt"
