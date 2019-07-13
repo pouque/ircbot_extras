@@ -48,7 +48,7 @@ sep_by (Nl >> many' Nl) WordNotNl <* (many' Nl)
 
 def read_greetings (path : string) : io (list string) := do
   buff ← io.fs.read_file path,
-  match run_string GreetingsFormat (unicode.get_buffer buff) with
+  match run_string GreetingsFormat buff.to_string with
   | sum.inr v := pure v
   | sum.inl er := io.fail $ sformat! "syntax error in {path}:\n{er}"
   end
