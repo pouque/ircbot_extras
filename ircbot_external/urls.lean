@@ -26,7 +26,7 @@ def get_page_by_url (url : string) : io string := do
     { cmd := "curl",
       args := [ "--max-time", to_string timeout, "--silent", "--no-keepalive", "--location", url ],
       stdout := io.process.stdio.piped },
-  page ← io.fs.read curl_proc.stdout max_length,
+  page ← io.fs.read_to_end curl_proc.stdout, --max_length,
   io.fs.close curl_proc.stdout,
   pure $ buffer.to_string page
 
