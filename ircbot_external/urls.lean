@@ -24,7 +24,7 @@ def max_length := 30 * 1024
 def get_page_by_url (url : string) : io string := do
   curl_proc ← io.proc.spawn
     { cmd := "curl",
-      args := [ "--max-time", to_string timeout, "--silent", "--location", url ],
+      args := [ "--max-time", to_string timeout, "--silent", "--no-keepalive", "--location", url ],
       stdout := io.process.stdio.piped },
   page ← io.fs.read curl_proc.stdout max_length,
   pure $ buffer.to_string page
