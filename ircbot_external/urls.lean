@@ -29,6 +29,7 @@ def get_page_by_url (url : string) : io string := do
   page ← io.fs.read curl_proc.stdout max_length,
   io.fs.close curl_proc.stdout,
   exitv ← io.proc.wait curl_proc,
+  when (exitv ≠ 0) $ io.put_str_ln $ sformat! "! process exited with status {exitv}",
   pure page.to_string
 
 def get_title_of_tokens : list string → option string
