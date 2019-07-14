@@ -18,7 +18,7 @@ list.filter_map
   (λ word, sum.cases_on (run_string Url word) (λ _, none) some) $
     text.split (∈ delims)
 
-def timeout := 1
+def timeout := 2
 def max_length := 30 * 1024
 
 def get_page_by_url (url : string) : io string := do
