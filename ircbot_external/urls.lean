@@ -22,13 +22,14 @@ def timeout := 2
 def max_length := 30 * 1024
 
 def get_page_by_url (url : string) : io string := do
-  curl_proc ← io.proc.spawn
+  --curl_proc ← io.proc.spawn
+  io.cmd
     { cmd := "curl",
       args := [ "--max-time", to_string timeout, "--silent", "--no-keepalive", "--location", url ],
-      stdout := io.process.stdio.piped },
-  page ← io.fs.read curl_proc.stdout max_length,
-  io.fs.close curl_proc.stdout,
-  pure $ buffer.to_string page
+      stdout := io.process.stdio.piped }
+  --page ← io.fs.read curl_proc.stdout max_length,
+  --io.fs.close curl_proc.stdout,
+  --pure $ buffer.to_string page
 
 def get_title_of_tokens : list string → option string
 | (start :: content :: close :: tl) :=
