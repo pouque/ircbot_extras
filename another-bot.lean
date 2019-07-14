@@ -23,7 +23,7 @@ def channels := ["#chlor"]
 
 def messages : list irc_text :=
   join <$> channels ++
-  [ privmsg "#chlor" "Пруверы правят миром",
+  [ privmsg "#chlor" "Аниме придумал Сатана.",
     mode bot_nickname "+B" ]
 
 def my_bot_info : bot_info :=
