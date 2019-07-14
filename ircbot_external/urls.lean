@@ -27,6 +27,7 @@ def get_page_by_url (url : string) : io string := do
       args := [ "--max-time", to_string timeout, "--silent", "--no-keepalive", "--location", url ],
       stdout := io.process.stdio.piped },
   page ← io.fs.read curl_proc.stdout max_length,
+  io.fs.close curl_proc.stdout,
   pure $ buffer.to_string page
 
 def get_title_of_tokens : list string → option string
