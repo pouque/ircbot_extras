@@ -16,10 +16,10 @@ def ident : string := "lean"
 def bot_nickname : string := "leanbot"
 -- constants
 
-theorem bot_nickname_is_correct : bot_nickname.front ≠ '#' :=
-begin intros contra, cases contra end
+meta def cases_trivial : tactic unit :=
+`[ intro x, cases x ]
 
-def channels := ["#chlor"]
+def channels := [ "#chlor" ]
 
 def messages : list irc_text :=
   join <$> channels ++
@@ -27,7 +27,7 @@ def messages : list irc_text :=
     mode bot_nickname "+B" ]
 
 def my_bot_info : bot_info :=
-bot_info.mk bot_nickname ident server port
+bot_info.mk bot_nickname (by cases_trivial) ident server port
 
 def my_funcs (countries : list (string × string))
   (greetings : list string) (acc : account) : list bot_function :=
@@ -35,14 +35,14 @@ def my_funcs (countries : list (string × string))
     sasl my_bot_info messages acc,
     modules.print_date.print_date,
     modules.admin.join_channel,
-    ircbot_external.penis.penis,
-    ircbot_external.detect.detect,
-    ircbot_external.detect.client,
-    ircbot_external.capital.capital countries,
-    ircbot_external.sieg.sieg greetings my_bot_info.nickname,
-    ircbot_external.sieg.gruss greetings my_bot_info.nickname,
-    ircbot_external.urls.titles,
-    ircbot_external.moveton.moveton,
+    ircbot_external.penis,
+    ircbot_external.detect,
+    ircbot_external.client,
+    ircbot_external.capital countries,
+    ircbot_external.sieg greetings my_bot_info.nickname,
+    ircbot_external.gruss greetings my_bot_info.nickname,
+    ircbot_external.urls,
+    ircbot_external.moveton,
     relogin ]
 
 def my_bot (countries : list (string × string))
@@ -56,7 +56,6 @@ def countries_file := "countries.csv"
 def greetings_file := "greetings.txt"
 
 def main := do
-  --db ← ircbot_external.karma.return_db "bot.sqlite",
   args ← io.cmdline_args,
   countries ← ircbot_external.capital.read_db countries_file,
   greetings ← ircbot_external.sieg.read_greetings greetings_file,
