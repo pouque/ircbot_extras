@@ -52,6 +52,6 @@ def capital (db : list (string × string)) : bot_function :=
   { name := "capital",
     syntax := some "\\capital [place]",
     description := "Identifies the capital of something!",
-    func := functor.map $ capital.capital_func db }
+    func := pure ∘ capital.capital_func db }
 
 end ircbot_external

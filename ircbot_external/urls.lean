@@ -51,7 +51,7 @@ def urls : bot_function :=
   { name := "title",
     syntax := none,
     description := "Returns URL titles.",
-    func := λ raw_input, do input ← raw_input,
+    func := λ input,
       match input with
       | irc_text.parsed_normal
         { object := some object, type := message.privmsg,

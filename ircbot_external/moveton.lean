@@ -25,6 +25,6 @@ def moveton : bot_function :=
   { name := "moveton",
     syntax := some "\\moveton [nickname]",
     description := "Find moveton.",
-    func := functor.map moveton.moveton_func }
+    func := pure ∘ moveton.moveton_func }
 
 end ircbot_external

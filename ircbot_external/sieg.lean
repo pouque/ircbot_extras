@@ -45,8 +45,7 @@ namespace sieg
     end
 
   protected def sieg_func (greetings : list string) (my_nickname : string)
-    (raw_text : io irc_text) : io (list irc_text) := do
-    text ← raw_text,
+    (text : irc_text) : io (list irc_text) := do
     greeting ← get_greeting greetings my_nickname,
     pure $ greet_at_join my_nickname greeting text
 
@@ -54,8 +53,7 @@ namespace sieg
     parsing.tok "\\gruß", many_char1 parsing.WordChar
 
   protected def gruss_func (greetings : list string) (my_nickname : string)
-    (raw_text : io irc_text) : io (list irc_text) := do
-    text ← raw_text,
+    (text : irc_text) : io (list irc_text) := do
     match text with
     | (irc_text.parsed_normal
        { object := some ~nick!ident, type := message.privmsg,

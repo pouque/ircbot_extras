@@ -50,12 +50,12 @@ def detect : bot_function :=
   { name := "detect",
     syntax := none,
     description := "Detects user.",
-    func := functor.map detect.detect_func }
+    func := pure ∘ detect.detect_func }
 
 def client : bot_function :=
   { name := "client",
     syntax := some "\\client [nickname]",
     description := "Info about users client.",
-    func := functor.map detect.client_func }
+    func := pure ∘ detect.client_func }
 
 end ircbot_external

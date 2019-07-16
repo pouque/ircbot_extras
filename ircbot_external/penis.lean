@@ -33,6 +33,6 @@ def penis : bot_function :=
   { name := "penis",
     syntax := some "\\penis [nickname]",
     description := "Measures the penis.",
-    func := functor.map penis.penis_func }
+    func := pure ∘ penis.penis_func }
 
 end ircbot_external

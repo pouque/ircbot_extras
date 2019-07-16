@@ -36,6 +36,6 @@ def translate : bot_function :=
   { name := "retranslator 9000",
     syntax := some "\\pizdec",
     description := "Some pizdec",
-    func := (>>= translate.translate_func) }
+    func := translate.translate_func }
 
 end ircbot_external
