@@ -5,12 +5,15 @@ open types support parser
 namespace ircbot_external
 
 namespace urls
+  def Prefix : parser string :=
+  many_char $ sat (not ∘ char.is_alpha)
+
   def Scheme : parser string :=
   str "http://" >> pure "http://" <|>
   str "https://" >> pure "https://"
 
   def Url : parser string := do
-  (++) <$> Scheme <*> many_char1 parsing.WordChar <* optional (ch '.')
+  (++) <$> (Prefix >> Scheme) <*> many_char1 parsing.WordChar <* optional (ch '.')
 
   def delims : list char := [' ', '\t', ',', ';', '|']
 
@@ -19,8 +22,8 @@ namespace urls
     (λ word, sum.cases_on (run_string Url word) (λ _, none) some) $
       text.split (∈ delims)
 
-  def timeout := 2
-  def max_length := 30 * 1024
+  def timeout := 4
+  def max_length := 150 * 1024
 
   def get_page_by_url (url : string) : io string := do
     curl_proc ← io.proc.spawn
