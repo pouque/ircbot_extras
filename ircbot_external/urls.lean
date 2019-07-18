@@ -89,7 +89,7 @@ namespace urls
     (parser.fail "unknown entity") entities
 
   def Quoted : parser string :=
-  many_char (NotAmpersand <|> CharEntRef)
+  many_char (NotAmpersand <|> CharEntRef <|> NumCharRef)
 
   def curl_conf.args (x : curl_conf) : list string :=
   [ "--retry", to_string x.retry,
