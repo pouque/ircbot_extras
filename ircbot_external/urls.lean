@@ -5,6 +5,15 @@ open types support parser
 namespace ircbot_external
 
 namespace urls
+  structure curl_conf :=
+  (retry : ℕ) (retry_max_time : ℕ) (max_time : ℕ)
+
+  def curl_conf.args (x : curl_conf) : list string :=
+  [ "--retry", to_string x.retry,
+    "--retry-max-time", to_string x.retry_max_time,
+    "--max-time", to_string x.max_time,
+    "--silent", "--no-keepalive" ]
+
   def Prefix : parser string :=
   many_char $ sat (not ∘ char.is_alpha)
 
@@ -22,13 +31,17 @@ namespace urls
     (λ word, sum.cases_on (run_string Url word) (λ _, none) some) $
       text.split (∈ delims)
 
-  def timeout := 4
+  def conf : curl_conf :=
+  { retry := 5,
+    retry_max_time := 5,
+    max_time := 1 }
+
   def max_length := 150 * 1024
 
   def get_page_by_url (url : string) : io string := do
     curl_proc ← io.proc.spawn
       { cmd := "curl",
-        args := [ "--max-time", to_string timeout, "--silent", "--no-keepalive", "--location", url ],
+        args := conf.args ++ [ "--location", url ],
         stdout := io.process.stdio.piped },
     page ← io.fs.read curl_proc.stdout max_length,
     io.fs.close curl_proc.stdout,
