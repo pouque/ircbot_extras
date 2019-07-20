@@ -17,11 +17,11 @@ namespace detect
     info ← many_char1 $ sat (≠ one),
     ch one, pure info
 
-  protected def detect_func : irc_text → list irc_text
+  protected def detect_func (exceptions : list string) : irc_text → list irc_text
   | (irc_text.parsed_normal
       { object := some ~nick!ident, type := message.join,
         args := channel :: _, text := _ }) :=
-    if channel = priv_channel then
+    if channel = priv_channel ∧ nick ∉ exceptions then
       [ privmsg nick $ sformat! "{one}VERSION{one}" ]
     else []
   | (irc_text.parsed_normal
@@ -46,11 +46,11 @@ namespace detect
   | _ := []
 end detect
 
-def detect : bot_function :=
+def detect (exceptions : list string) : bot_function :=
   { name := "detect",
     syntax := none,
     description := "Detects user.",
-    func := pure ∘ detect.detect_func }
+    func := pure ∘ detect.detect_func exceptions }
 
 def client : bot_function :=
   { name := "client",

@@ -21,6 +21,8 @@ meta def cases_trivial : tactic unit :=
 
 def channels := [ "#chlor" ]
 
+def exceptions := [ "fedor_rus", "fedor" ]
+
 def messages : list irc_text :=
   join <$> channels ++
   [ privmsg "#chlor" "Аниме придумал Сатана.",
@@ -36,10 +38,10 @@ def my_funcs (countries : list (string × string))
     modules.print_date.print_date,
     modules.admin.join_channel,
     ircbot_external.penis,
-    ircbot_external.detect,
+    ircbot_external.detect exceptions,
     ircbot_external.client,
     ircbot_external.capital countries,
-    ircbot_external.sieg greetings my_bot_info.nickname,
+    ircbot_external.sieg greetings exceptions my_bot_info.nickname,
     ircbot_external.gruss greetings my_bot_info.nickname,
     ircbot_external.urls,
     ircbot_external.moveton,

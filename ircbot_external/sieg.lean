@@ -23,15 +23,18 @@ namespace sieg
   [ privmsg g.channel $ sformat! "{g.dest}, {g.greeting}! o/" ]
   else []
 
-  def greet_at_join (my_nickname : string) (greeting : string) : irc_text → list irc_text
+  def greet_at_join (my_nickname : string) (exceptions : list string)
+    (greeting : string) : irc_text → list irc_text
   | (irc_text.parsed_normal
      { object := some ~nick!ident, type := message.join,
        args := channel :: _, text := _ }) :=
-    generate_greet
-      { greeting := greeting,
-        my_nickname := my_nickname,
-        dest := nick,
-        channel := channel }
+    if nick ∉ exceptions then
+      generate_greet
+        { greeting := greeting,
+          my_nickname := my_nickname,
+          dest := nick,
+          channel := channel }
+    else []
   | _ := []
 
   instance : inhabited (io string) :=
@@ -44,10 +47,10 @@ namespace sieg
     | _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ greetings.get
     end
 
-  protected def sieg_func (greetings : list string) (my_nickname : string)
-    (text : irc_text) : io (list irc_text) := do
+  protected def sieg_func (greetings : list string) (exceptions : list string)
+    (my_nickname : string) (text : irc_text) : io (list irc_text) := do
     greeting ← get_greeting greetings my_nickname,
-    pure $ greet_at_join my_nickname greeting text
+    pure $ greet_at_join my_nickname exceptions greeting text
 
   def GrussCommand : parser string := do
     parsing.tok "\\gruß", many_char1 parsing.WordChar
@@ -82,11 +85,12 @@ namespace sieg
     end
 end sieg
 
-def sieg (greetings : list string) (my_nickname : string) : bot_function :=
+def sieg (greetings : list string) (exceptions : list string)
+         (my_nickname : string) : bot_function :=
   { name := "sieg",
     syntax := none,
     description := "Greets at join.",
-    func := sieg.sieg_func greetings my_nickname }
+    func := sieg.sieg_func greetings exceptions my_nickname }
 
 def gruss (greetings : list string) (my_nickname : string) : bot_function :=
   { name := "Gruß",
