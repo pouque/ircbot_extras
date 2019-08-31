@@ -107,7 +107,8 @@ namespace urls
   def Url : parser string := do
   (++) <$> (Prefix >> Scheme) <*> many_char1 parsing.WordChar <* optional (ch '.')
 
-  def delims : list char := [' ', '\t', ',', ';', '|']
+  def delims :=
+  [' ', '\n', '\t', ',', ';', '|', '(', ')', '[', ']', '{', '}']
 
   def get_urls (text : string) : list string :=
   list.filter_map
@@ -142,9 +143,20 @@ namespace urls
   def tokenize : string → list string :=
   string.split (∈ ['<', '>'])
 
+  def take_right_while {α : Type} (f : α → Prop) [decidable_pred f] : list α → list α
+  | (hd :: tl) := if f hd then take_right_while tl else hd :: tl
+  | [] := []
+
+  def take_left_while {α : Type} (f : α → Prop) [decidable_pred f] (xs : list α) :=
+  (take_right_while f xs.reverse).reverse
+
+  def trim : string → string :=
+  list.as_string ∘ take_left_while char.is_whitespace ∘
+  take_right_while char.is_whitespace ∘ string.to_list
+
   def get_title (page : string) : option string :=
   match run_string Quoted <$> get_title_of_tokens (tokenize page) with
-  | some (sum.inr title) := some title
+  | some (sum.inr title) := some (trim title)
   | _ := none
   end
 

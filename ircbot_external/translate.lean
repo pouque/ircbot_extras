@@ -13,7 +13,7 @@ namespace translate
   str "\\nahuj"
 
   def CorrectTranslateCommand : parser (option string) :=
-  Prefix >> optional (parsing.Ws >> parsing.FreeWord)
+  Prefix >> optional (parsing.Ws >> parsing.Word)
 
   protected def translate_func (input : irc_text) : io (list irc_text) :=
   match input with
