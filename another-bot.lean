@@ -19,7 +19,7 @@ def bot_nickname : string := "leanbot"
 meta def cases_trivial : tactic unit :=
 `[ intro x, cases x ]
 
-def channels := [ "#chlor" ]
+def channels := [ "#chlor", "#n2o", "#groupoid" ]
 
 def exceptions := [ "fedor_rus", "fedor" ]
 
