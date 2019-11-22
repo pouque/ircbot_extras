@@ -20,19 +20,13 @@ namespace weather
         args :=
           [ "--max-time", to_string max_time,
             "--silent", "--no-keepalive",
-            get_url loc ],
+            string.quote (get_url loc) ],
         stdout := io.process.stdio.piped },
     page ← io.fs.read curl_proc.stdout max_length,
     io.fs.close curl_proc.stdout,
     exitv ← io.proc.wait curl_proc,
     pure $ if (exitv ≠ 0) then sformat! "curl exited with status {exitv}, sorry"
            else page.to_string
-
-  def escape_char : char → string
-  | ' ' := "+"
-  | c   := string.singleton c
-
-  def escape (s : string) := string.join (escape_char <$> s.to_list)
 
   def CorrectWeatherCommand : parser string :=
   parsing.tok "\\weather" >> many_char1 (sat $ function.const char true)
@@ -49,7 +43,7 @@ def weather : bot_function :=
           args := [subject], text := text } := 
         match run_string weather.CorrectWeatherCommand text with
         | (sum.inr loc) := do
-          res ← weather.get_weather_by_location (weather.escape loc),
+          res ← weather.get_weather_by_location loc,
           pure [ privmsg subject res ]
         | _ := pure []
         end
