@@ -20,7 +20,7 @@ namespace weather
         args :=
           [ "--max-time", to_string max_time,
             "--silent", "--no-keepalive",
-            string.quote (get_url loc) ],
+            get_url loc ],
         stdout := io.process.stdio.piped },
     page ← io.fs.read curl_proc.stdout max_length,
     io.fs.close curl_proc.stdout,
