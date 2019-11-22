@@ -10,9 +10,9 @@ namespace weather
   def format := "%l:+%C+%t+%w+%P+%p"
 
   def get_url (loc : string) :=
-  sformat! "wttr.in/{loc}?format=\"{format}\""
+  sformat! "wttr.in/{loc}?format={format}"
 
-  def max_time := 3
+  def max_time := 7
 
   def get_weather_by_location (loc : string) : io string := do
     curl_proc ← io.proc.spawn
