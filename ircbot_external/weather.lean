@@ -28,8 +28,14 @@ namespace weather
     pure $ if (exitv ≠ 0) then sformat! "curl exited with status {exitv}, sorry"
            else page.to_string
 
+  def escape_char : char → string
+  | ' ' := "+"
+  | c   := string.singleton c
+
+  def escape (s : string) := string.join (escape_char <$> s.to_list)
+
   def CorrectWeatherCommand : parser string :=
-  parsing.tok "\\weather" >> many_char1 parsing.WordChar
+  parsing.tok "\\weather" >> many_char1 (sat $ function.const char true)
 end weather
 
 def weather : bot_function :=
@@ -43,7 +49,7 @@ def weather : bot_function :=
           args := [subject], text := text } := 
         match run_string weather.CorrectWeatherCommand text with
         | (sum.inr loc) := do
-          res ← weather.get_weather_by_location loc,
+          res ← weather.get_weather_by_location (weather.escape loc),
           pure [ privmsg subject res ]
         | _ := pure []
         end
