@@ -4,6 +4,7 @@ import ircbot.modules
 import ircbot_external.penis ircbot_external.detect
 import ircbot_external.capital ircbot_external.sieg
 import ircbot_external.urls ircbot_external.moveton
+import ircbot_external.weather
 
 open types effects support parsing login
 open parser
@@ -45,6 +46,7 @@ def my_funcs (countries : list (string × string))
     ircbot_external.gruss greetings my_bot_info.nickname,
     ircbot_external.urls,
     ircbot_external.moveton,
+    ircbot_external.weather,
     relogin ]
 
 def my_bot (countries : list (string × string))
