@@ -2,19 +2,6 @@ import ircbot.types ircbot.support ircbot.parsing
 import data.buffer.parser ircbot.unicode
 open types support parser
 
-namespace string
-  def take_right_while {α : Type} (f : α → Prop) [decidable_pred f] : list α → list α
-  | (hd :: tl) := if f hd then take_right_while tl else hd :: tl
-  | [] := []
-
-  def take_left_while {α : Type} (f : α → Prop) [decidable_pred f] (xs : list α) :=
-  (take_right_while f xs.reverse).reverse
-
-  def trim (c : char → Prop) [decidable_pred c] : string → string :=
-  list.as_string ∘ take_left_while c ∘
-  take_right_while c ∘ string.to_list
-end string
-
 namespace ircbot_external
 
 -- https://www.w3.org/TR/html4/sgml/entities.html

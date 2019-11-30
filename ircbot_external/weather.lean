@@ -30,9 +30,10 @@ namespace weather
 end weather
 
 def weather : bot_function :=
+let emit (subject : string) : string → list irc_text :=
+list.singleton ∘ privmsg subject ∘ string.trim char.is_whitespace in
 router "weather" "http://wttr.in/ client." none Words
-  (λ msg loc, weather.get_weather_by_location loc >>=
-              pure ∘ list.singleton ∘ privmsg msg.subject)
+  (λ msg loc, emit msg.subject <$> weather.get_weather_by_location loc)
   [ message.privmsg ]
 
 end ircbot_external
