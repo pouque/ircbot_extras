@@ -58,7 +58,9 @@ def list.singleton {α : Type} (x : α) : list α := [ x ]
 
 def weather : bot_function :=
 router "weather" "http://wttr.in/ client." none Words
-  (λ msg loc, weather.get_weather_by_location loc >>=
-              pure ∘ list.singleton ∘ privmsg msg.subject)
+  (λ msg loc, if msg.type = message.privmsg then
+                weather.get_weather_by_location loc >>=
+                pure ∘ list.singleton ∘ privmsg msg.subject
+              else pure [])
 
 end ircbot_external
