@@ -1,5 +1,4 @@
-import ircbot.types ircbot.support ircbot.parsing
-import data.buffer.parser ircbot.unicode
+import ircbot.router
 open types support parser
 
 namespace ircbot_external
@@ -30,37 +29,10 @@ namespace weather
 
 end weather
 
-def Words : parser string :=
-many_char1 (sat $ function.const char true)
-
-structure speech :=
-(object : person) (subject text : string) (type : message)
-
-def router {α : Type} (name desc : string) (syntax : option string)
-  (p : parser α) (func : speech → α → io (list irc_text)) : bot_function :=
-let p' := parsing.tok ("\\" ++ name) >> p in
-{ name := name,
-  syntax := syntax,
-  description := desc,
-  func := λ input,
-    match input with
-    | irc_text.parsed_normal
-      { object := some object, type := type,
-        args := [ subject ], text := text } := 
-      if subject.front = '#' then
-        sum.rec_on (run_string p' text) (λ _, pure [])
-          (func ⟨object, subject, text, type⟩)
-      else pure []
-    | _ := pure []
-    end }
-
-def list.singleton {α : Type} (x : α) : list α := [ x ]
-
 def weather : bot_function :=
 router "weather" "http://wttr.in/ client." none Words
-  (λ msg loc, if msg.type = message.privmsg then
-                weather.get_weather_by_location loc >>=
-                pure ∘ list.singleton ∘ privmsg msg.subject
-              else pure [])
+  (λ msg loc, weather.get_weather_by_location loc >>=
+              pure ∘ list.singleton ∘ privmsg msg.subject)
+  [ message.privmsg ]
 
 end ircbot_external
