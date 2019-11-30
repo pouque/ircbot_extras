@@ -47,7 +47,7 @@ let p' := parsing.tok ("\\" ++ name) >> p in
     | irc_text.parsed_normal
       { object := some object, type := type,
         args := [ subject ], text := text } := 
-      if subject.front ≠ '#' then
+      if subject.front = '#' then
         sum.rec_on (run_string p' text) (λ _, pure [])
           (func ⟨object, subject, text, type⟩)
       else pure []
