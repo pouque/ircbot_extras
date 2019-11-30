@@ -1,57 +1,39 @@
-import ircbot.types ircbot.support ircbot.parsing
-import data.buffer.parser
-import data.buffer
+import ircbot.router
 open types support parser parsing
 
 namespace ircbot_external
 
 namespace capital
-  def reserved := ['\n', char.of_nat 13, ',', '"']
+  def reserved := [ '\n', char.of_nat 13, ',', '"' ]
   def Word := many_char1 $ sat (λ c, list.all reserved (≠ c))
-  def WrappedWord := ch '"' >> Word <* ch '"'
+  def Quoted := ch '"' >> Word <* ch '"'
 
   def Country := do
-    country ← WrappedWord, ch ',',
-    capital ← WrappedWord,
+    country ← Quoted, ch ',', capital ← Quoted,
     pure (country, capital)
 
-  def CountriesFormat :=
+  def CSV :=
   sep_by (Nl >> many' Nl) Country <* (many' Nl)
 
-  def CorrectCapitalCommand : parser string := do
-    parsing.tok "\\capital", Word
-
-  private def lookup (target : string) : list (string × string) → option string
+  def lookup (target : string) : list (string × string) → option string
   | [] := none
   | ((key, value) :: tail) :=
     if key = target then some value else lookup tail
 
-  protected def capital_func (db : list (string × string)) (input : irc_text) : list irc_text :=
-  match input with
-  | irc_text.parsed_normal
-    { object := some ~nick!ident, type := message.privmsg,
-      args := [subject], text := text } :=
-    match run_string CorrectCapitalCommand text with
-    | sum.inr place :=
-      let answer := option.get_or_else (lookup place db) "I don't know." in
-      [ privmsg subject answer ]
-    | sum.inl _ := []
-    end
-  | _ := []
-  end
-
   def read_db (path : string) : io (list (string × string)) := do
     buff ← io.fs.read_file path,
-    match run_string CountriesFormat buff.to_string with
+    match run_string CSV buff.to_string with
     | sum.inr v := pure v
-    | sum.inl er := io.fail $ sformat! "syntax error in {path}:\n{er}"
+    | sum.inl er := io.fail (sformat! "syntax error in {path}:\n{er}")
     end
 end capital
 
 def capital (db : list (string × string)) : bot_function :=
-  { name := "capital",
-    syntax := some "\\capital [place]",
-    description := "Identifies the capital of something!",
-    func := pure ∘ capital.capital_func db }
+router "capital" "Identifies the capital of something!"
+  "\\capital [place]" capital.Word
+  (λ msg place, pure
+    [ privmsg msg.subject $
+        option.get_or_else (capital.lookup place db) "I don’t know." ])
+  [ message.privmsg ]
 
 end ircbot_external

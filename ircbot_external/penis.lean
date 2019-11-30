@@ -1,38 +1,21 @@
-import ircbot.types ircbot.support ircbot.parsing
-import data.buffer.parser
+import ircbot.router
 open types support parser
 
 namespace ircbot_external
 
 namespace penis
-  def CorrectPenisCommand : parser string := do
-    parsing.tok "\\penis", many_char1 parsing.WordChar
-
   def minimal_length := 8
   def maximal_length := 14
-
-  protected def penis_func (input : irc_text) : list irc_text :=
-  match input with
-  | irc_text.parsed_normal
-    { object := some object, type := message.privmsg,
-      args := [subject], text := text } :=
-      match run_string CorrectPenisCommand text with
-      | (sum.inr nick) :=
-        let length :=
-        minimal_length +
-          (list.foldl (+) 0 $ char.to_nat <$> nick.to_list) %
-          maximal_length in
-        [ privmsg subject $ sformat! "{nick} has {length} cm" ]
-      | _ := []
-      end
-  | _ := []
-  end
 end penis
 
 def penis : bot_function :=
-  { name := "penis",
-    syntax := some "\\penis [nickname]",
-    description := "Measures the penis.",
-    func := pure ∘ penis.penis_func }
+router "penis" "Measures the penis." "Measures the penis." Word
+  (λ msg nick,
+    let length :=
+      penis.minimal_length +
+        (list.foldl (+) 0 $ char.to_nat <$> nick.to_list) %
+        penis.maximal_length in
+    pure [ privmsg msg.subject $ sformat! "{nick} has {length} cm" ])
+  [ message.privmsg ]
 
 end ircbot_external

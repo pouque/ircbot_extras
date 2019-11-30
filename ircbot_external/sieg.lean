@@ -44,7 +44,7 @@ namespace sieg
     date ← (λ x, option.get_or_else x datetime.null_date) <$> effects.get_date,
     match date.weekday with
     | datetime.day_of_week.saturday := pure "шаббат шалом"
-    | _ := (io.rand 0 $ greetings.length - 1) >>= pure ∘ greetings.get
+    | _ := greetings.get <$> (io.rand 0 $ greetings.length - 1)
     end
 
   protected def sieg_func (greetings : list string) (exceptions : list string)
