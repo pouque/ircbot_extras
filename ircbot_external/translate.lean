@@ -7,9 +7,9 @@ namespace ircbot_external
 namespace translate
   def Prefix :=
   str "\\pizdec" <|>
-  str "\\cyka" <|>
-  str "\\blyad" <|>
-  str "\\bljad" <|>
+  str "\\cyka"   <|>
+  str "\\blyad"  <|>
+  str "\\bljad"  <|>
   str "\\nahuj"
 
   def CorrectTranslateCommand : parser (option string) :=
