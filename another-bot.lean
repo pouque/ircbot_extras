@@ -65,6 +65,6 @@ def main := do
   greetings ← ircbot_external.sieg.read_greetings greetings_file,
   match args with
   | (login :: password :: []) :=
-    mk_bot (my_bot countries greetings $ account.mk login password)
+    mk_bot (my_bot countries greetings $ account.mk login password) netcat
   | _ := io.fail "syntax: lean --run file.lean [login] [password]"
   end
