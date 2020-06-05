@@ -25,7 +25,10 @@ namespace justice
   |    []     := ff
   | (y :: ys) := list.is_prefix_of x (y :: ys) ∨ substring ys
 
-  def triggers := string.to_list <$> [ "гей", "геи", "gay" ]
+  def triggers := string.to_list <$>
+    [ "гей", "гея", "гею", "геем", "гее",
+      "геи", "геев", "геям", "геями", "геях",
+      "gay" ]
 
   def check (s : string) :=
   let s' := clean s in list.any triggers (λ x, substring x s')
