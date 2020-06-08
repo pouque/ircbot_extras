@@ -28,7 +28,7 @@ namespace justice
   def triggers := string.to_list <$>
     [ "гей", "гея", "гею", "геем", "гее",
       "геи", "геев", "геям", "геями", "геях",
-      "gay" ]
+      "gay", "пердоликс", "perdoliks" ]
 
   def check (s : string) :=
   let s' := clean s in list.any triggers (λ x, substring x s')
