@@ -47,7 +47,6 @@ def my_funcs (countries : list (string × string))
     ircbot_external.urls,
     ircbot_external.moveton,
     ircbot_external.weather,
-    ircbot_external.justice,
     relogin ]
 
 def my_bot (countries : list (string × string))
