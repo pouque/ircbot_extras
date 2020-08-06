@@ -5,7 +5,7 @@ def string.hash (s : string) : nat :=
 list.foldl (+) 0 (char.to_nat <$> s.to_list)
 
 def list.get_by_hash {α : Type} [inhabited α] (xs : list α) (s : string) : α :=
-xs.get (s.hash % s.length)
+xs.get (s.hash % xs.length)
 
 namespace ircbot_external
 
@@ -27,13 +27,13 @@ def genders :=
    "transmasculine", "two-spirit", "cisgender woman"]
 
 def ideologies :=
-  ["left anarchist", "communist", "right anarchist", "libertarian",
-   "eurasian", "liberal", "fascist", "populist", "social democrat",
+  ["left anarchist", "liberal", "right anarchist", "libertarian",
+   "eurasian", "communist", "fascist", "populist", "social democrat",
    "syndicalist", "nationalist", "schizophrenic"]
 
-def colours := ["nigger", "white", "asian", "mexican", "bashkir", "buryat", "ukrop"]
+def colours := ["nigger", "asian", "mexican", "bashkir", "buryat", "ukrop", "white"]
 def size := ["fat", "skinny"]
-def look := ["pretty", "normal", "ugly"]
+def look := ["pretty", "ugly", "normal"]
 
 def nat.to_bool : ℕ → bool
 |    0    := tt
