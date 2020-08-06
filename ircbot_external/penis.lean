@@ -32,7 +32,7 @@ def ideologies :=
    "syndicalist", "nationalist", "schizophrenic"]
 
 def colours := ["nigger", "american nigger", "yellow-cheeked", "asian", "mexican", "bashkir", "buryat", "tatarstanian", "white"]
-def sizes := ["extremly fat", "abnormally fat", "very fat", "fat", "normal weight", "extremly thin", "drish", "thin", "skinny"]
+def sizes := ["extremly fat", "abnormally fat", "very fat", "fat", "normal weight", "extremly thin", "thin", "skinny"]
 def look := ["very sexy", "sexy", "pretty", "normal looking", "unremarkable", "ugly", "freak", "retarded looking"]
 def religious :=
   ["orthodox", "atheist", "catholic", "muslim",
