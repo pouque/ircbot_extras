@@ -8,13 +8,13 @@ namespace penis
   def maximal_length := 30
 
   def genders :=
-    ["Agender", "Androgyne", "Androgynous", "Bigender", "Cis",
-     "Cis Female", "Cis Male", "Cis Man", "Cis Woman", "Cisgender",
+    ["Agender", "Androgyne", "Androgynous", "Bigender",
+     "Cis Female", "FTM", "Cis Man", "Cis Woman",
      "Cisgender Female", "Cisgender Male", "Cisgender Man", "Cisgender Woman",
-     "Female to Male", "FTM", "Gender Fluid", "Gender Nonconforming",
+     "Female to Male", "Cis Male", "Gender Fluid", "Gender Nonconforming",
      "Gender Questioning", "Gender Variant", "Genderqueer", "Intersex",
      "Male to Female", "MTF", "Neither", "Neutrois", "Non-binary", "Other",
-     "Pangender", "Trans", "Trans Female", "Trans Male", "Trans Man", "Trans Person",
+     "Pangender", "Trans Female", "Trans Male", "Trans Man", "Trans Person",
      "Trans Woman", "Transexual", "Transexual Female", "Transexual Male",
      "Transexual Man", "Transexual Person", "Transexual Woman", "Transgender Female",
      "Transgender Male", "Transgender Man", "Transgender Person", "Transgender Woman",
