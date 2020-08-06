@@ -32,7 +32,7 @@ def ideologies :=
    "syndicalist", "nationalist", "schizophrenic"]
 
 def colours := ["nigger", "asian", "mexican", "bashkir", "buryat", "ukrop", "white"]
-def size := ["fat", "skinny"]
+def sizes := ["fat", "skinny"]
 def look := ["pretty", "ugly", "normal"]
 
 def nat.to_bool : ℕ → bool
@@ -55,9 +55,9 @@ router "jew" "Detect jews." "Detect jews." Word
       else sformat! "{nick} is not jew.") ])
   [ message.privmsg ]
 
-def specs := [genders, ideologies, colours, size, look]
+def specs := [sizes, look, colours, genders, ideologies]
 def get_profile (nick : string) :=
-string.intercalate ", " $ (λ xs, list.get_by_hash xs nick) <$> specs
+string.intercalate " " $ (λ xs, list.get_by_hash xs nick) <$> specs
 
 def profile : bot_function :=
 router "profile" "Return profile." "Return profile." Word
