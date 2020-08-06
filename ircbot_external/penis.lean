@@ -16,7 +16,7 @@ end penis
 
 def genders :=
   ["agender", "cis man", "androgyne", "androgynous", "bigender", "cis female",
-   "FTM", "cis woman", "cisgender Female", "cisgender male", "cisgender man",
+   "FTM", "cis woman", "cisgender female", "cisgender male", "cisgender man",
    "female to male", "cis male", "gender fluid", "gender nonconforming",
    "gender questioning", "gender variant", "genderqueer", "intersex",
    "male to female", "non-binary", "neither", "neutrois", "other",
@@ -31,12 +31,12 @@ def ideologies :=
    "eurasian", "communist", "fascist", "populist", "social democrat",
    "syndicalist", "nationalist", "schizophrenic"]
 
-def colours := ["nigger", "asian", "mexican", "bashkir", "buryat", "ukrop", "white"]
-def sizes := ["fat", "skinny"]
-def look := ["pretty", "ugly", "normal"]
+def colours := ["nigger", "american nigger", "yellow-cheeked", "asian", "mexican", "bashkir", "buryat", "tatarstanian", "white"]
+def sizes := ["extremly fat", "abnormally fat", "very fat", "fat", "normal weight", "extremly thin", "drish", "thin", "skinny"]
+def look := ["very sexy", "sexy", "pretty", "normal looking", "unremarkable", "ugly", "freak", "retarded looking"]
 def religious :=
   ["orthodox", "atheist", "catholic", "muslim",
-   "judaist", "judaist", "agnostic", "pagan"]
+   "judaist", "judaist", "agnostic", "pagan", "ukrop", "bulbash"]
 
 def nat.to_bool : ℕ → bool
 |    0    := tt
