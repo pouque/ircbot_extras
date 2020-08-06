@@ -1,37 +1,48 @@
 import ircbot.router
 open types support parser
 
+def string.hash (s : string) : nat :=
+list.foldl (+) 0 (char.to_nat <$> s.to_list)
+
+def list.get_by_hash {α : Type} [inhabited α] (xs : list α) (s : string) : α :=
+xs.get (s.hash % s.length)
+
 namespace ircbot_external
 
 namespace penis
   def minimal_length := 8
   def maximal_length := 30
-
-  def genders :=
-    ["Agender", "Androgyne", "Androgynous", "Bigender",
-     "Cis Female", "FTM", "Cis Man", "Cis Woman",
-     "Cisgender Female", "Cisgender Male", "Cisgender Man", "Cisgender Woman",
-     "Female to Male", "Cis Male", "Gender Fluid", "Gender Nonconforming",
-     "Gender Questioning", "Gender Variant", "Genderqueer", "Intersex",
-     "Male to Female", "MTF", "Neither", "Neutrois", "Non-binary", "Other",
-     "Pangender", "Trans Female", "Trans Male", "Trans Man", "Trans Person",
-     "Trans Woman", "Transexual", "Transexual Female", "Transexual Male",
-     "Transexual Man", "Transexual Person", "Transexual Woman", "Transgender Female",
-     "Transgender Male", "Transgender Man", "Transgender Person", "Transgender Woman",
-     "Transmasculine", "Two-spirit"]
 end penis
+
+def genders :=
+  ["agender", "cis man", "androgyne", "androgynous", "bigender", "cis female",
+   "FTM", "cis woman", "cisgender Female", "cisgender male", "cisgender man",
+   "female to male", "cis male", "gender fluid", "gender nonconforming",
+   "gender questioning", "gender variant", "genderqueer", "intersex",
+   "male to female", "non-binary", "neither", "neutrois", "other",
+   "pangender", "trans female", "trans male", "trans man", "trans person",
+   "trans woman", "transexual", "transexual female", "transexual male",
+   "transexual man", "transexual person", "transexual woman", "transgender female",
+   "transgender male", "transgender man", "transgender person", "transgender woman",
+   "transmasculine", "two-spirit", "cisgender woman"]
+
+def ideologies :=
+  ["left anarchist", "communist", "right anarchist", "libertarian",
+   "eurasian", "liberal", "fascist", "populist", "social democrat",
+   "syndicalist", "nationalist", "schizophrenic"]
+
+def colours := ["nigger", "white", "asian", "mexican", "bashkir", "buryat", "ukrop"]
+def size := ["fat", "skinny"]
+def look := ["pretty", "normal", "ugly"]
 
 def nat.to_bool : ℕ → bool
 |    0    := tt
 | (n + 1) := ff
 
-def hash (s : string) : nat :=
-list.foldl (+) 0 (char.to_nat <$> s.to_list)
-
 def penis : bot_function :=
 router "penis" "Measures the penis." "Measures the penis." Word
   (λ msg nick,
-    let length := penis.minimal_length + hash nick % penis.maximal_length in
+    let length := penis.minimal_length + nick.hash % penis.maximal_length in
     pure [ privmsg msg.subject $ sformat! "{nick} has {length} cm" ])
   [ message.privmsg ]
 
@@ -39,16 +50,19 @@ def jew : bot_function :=
 router "jew" "Detect jews." "Detect jews." Word
   (λ msg nick,
     pure [ privmsg msg.subject
-      (if nat.to_bool (hash nick % 2) then
+      (if nat.to_bool (nick.hash % 2) then
         sformat! "{nick} is jew!"
       else sformat! "{nick} is not jew.") ])
   [ message.privmsg ]
 
-def gender : bot_function :=
-router "gender" "Check gender." "Check gender." Word
-  (λ msg nick,
-    let idx := hash nick % penis.genders.length in
-    pure [ privmsg msg.subject (penis.genders.get idx) ])
+def specs := [genders, ideologies, colours, size, look]
+def get_profile (nick : string) :=
+string.intercalate ", " $ (λ xs, list.get_by_hash xs nick) <$> specs
+
+def profile : bot_function :=
+router "profile" "Return profile." "Return profile." Word
+  (λ msg nick, let profile := get_profile nick in
+    pure [ privmsg msg.subject (sformat! "{nick}: {profile}") ])
   [ message.privmsg ]
 
 end ircbot_external
