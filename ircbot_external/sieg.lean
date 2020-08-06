@@ -2,11 +2,6 @@ import ircbot.types ircbot.support ircbot.parsing ircbot.effects ircbot.datetime
 import data.buffer.parser system.random
 open types support parser parsing
 
-namespace list
-  def get {α : Type} [inhabited α] (l : list α) (n : ℕ) : α :=
-  list.head (list.drop n l)
-end list
-
 namespace ircbot_external.
 
 namespace sieg
