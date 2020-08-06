@@ -38,7 +38,7 @@ def my_funcs (countries : list (string × string))
     sasl my_bot_info messages acc,
     modules.print_date.print_date,
     modules.admin.join_channel,
-    ircbot_external.penis,
+    ircbot_external.penis, ircbot_external.jew,
     ircbot_external.detect exceptions,
     ircbot_external.client,
     ircbot_external.capital countries,
