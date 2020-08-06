@@ -5,7 +5,7 @@ namespace ircbot_external
 
 namespace penis
   def minimal_length := 8
-  def maximal_length := 14
+  def maximal_length := 30
 end penis
 
 def nat.to_bool : ℕ → bool
@@ -26,7 +26,7 @@ def jew : bot_function :=
 router "jew" "Detect jews." "Detect jews." Word
   (λ msg nick,
     pure [ privmsg msg.subject
-      (if nat.to_bool (hash nick) then
+      (if nat.to_bool (hash nick % 2) then
         sformat! "{nick} is jew!"
       else sformat! "{nick} is not jew.") ])
   [ message.privmsg ]
