@@ -43,14 +43,14 @@ def nat.to_bool : ℕ → bool
 | (n + 1) := ff
 
 def penis : bot_function :=
-router "penis" "Measures the penis." "Measures the penis." Word
+router "penis" "Measures the penis." "\\penis <nick>" Word
   (λ msg nick,
     let length := penis.minimal_length + nick.hash % penis.maximal_length in
     pure [ privmsg msg.subject $ sformat! "{nick} has {length} cm" ])
   [ message.privmsg ]
 
 def jew : bot_function :=
-router "jew" "Detect jews." "Detect jews." Word
+router "jew" "Detect jews." "\\jew <nick>" Word
   (λ msg nick,
     pure [ privmsg msg.subject
       (if nat.to_bool (nick.hash % 2) then
@@ -63,7 +63,7 @@ def get_profile (nick : string) :=
 string.intercalate " " $ (λ xs, list.get_by_hash xs nick) <$> specs
 
 def profile : bot_function :=
-router "profile" "Return profile." "Return profile." Word
+router "profile" "Return profile." "\\profile <nick>" Word
   (λ msg nick, let profile := get_profile nick in
     pure [ privmsg msg.subject (sformat! "{nick}: {profile}") ])
   [ message.privmsg ]
