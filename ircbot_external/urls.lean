@@ -164,8 +164,8 @@ def urls : bot_function :=
         { object := some object, type := message.privmsg,
           args := [subject], text := text } := 
         if subject.front = '#' then do
-          pages ← sequence $ urls.get_page_by_url <$> urls.get_urls text,
-          pure $ urls.title_notice subject <$> list.filter_map urls.get_title pages
+          pages ← sequence (urls.get_page_by_url <$> urls.get_urls text),
+          pure (urls.title_notice subject <$> list.filter_map urls.get_title pages)
         else pure []
       | _ := pure []
       end }

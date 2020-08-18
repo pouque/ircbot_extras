@@ -5,7 +5,7 @@ open types support parser parsing
 namespace ircbot_external.
 
 namespace sieg
-  def trusted_bots := [ "dim13" ]
+  def trusted_bots := ["dim13"]
 
   structure greet :=
   (greeting : string) (my_nickname : string)
@@ -13,9 +13,9 @@ namespace sieg
 
   def generate_greet (g : greet) : list irc_text :=
   if g.dest ∈ trusted_bots then
-  [ privmsg g.channel $ sformat! "Alarm! Bot ITC! {g.dest} is bot!" ]
+  [privmsg g.channel $ sformat! "Alarm! Bot ITC! {g.dest} is bot!"]
   else if g.dest ≠ g.my_nickname then
-  [ privmsg g.channel $ sformat! "{g.dest}, {g.greeting}! o/" ]
+  [privmsg g.channel $ sformat! "{g.dest}, {g.greeting}! o/"]
   else []
 
   def greet_at_join (my_nickname : string) (exceptions : list string)
@@ -23,7 +23,7 @@ namespace sieg
   | (irc_text.parsed_normal
      { object := some ~nick!ident, type := message.join,
        args := channel :: _, text := _ }) :=
-    if nick ∉ exceptions then
+    if nick ∉ exceptions ∧ ¬matrix nick then
       generate_greet
         { greeting := greeting,
           my_nickname := my_nickname,

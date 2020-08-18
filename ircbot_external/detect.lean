@@ -21,7 +21,7 @@ namespace detect
   | (irc_text.parsed_normal
       { object := some ~nick!ident, type := message.join,
         args := channel :: _, text := _ }) :=
-    if channel = priv_channel ∧ nick ∉ exceptions then
+    if channel = priv_channel ∧ nick ∉ exceptions ∧ ¬matrix nick then
       [ privmsg nick $ sformat! "{one}VERSION{one}" ]
     else []
   | (irc_text.parsed_normal
