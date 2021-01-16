@@ -2,6 +2,9 @@ import ircbot.types ircbot.support ircbot.parsing
 import data.buffer.parser ircbot.unicode
 open types support parser
 
+def string.filter (f : char → Prop) [decidable_pred f] : string → string :=
+list.as_string ∘ list.filter f ∘ string.to_list
+
 namespace ircbot_external
 
 -- https://www.w3.org/TR/html4/sgml/entities.html
@@ -107,13 +110,19 @@ namespace urls
   def Url : parser string := do
   (++) <$> (Prefix >> Scheme) <*> many_char1 parsing.WordChar <* optional (ch '.')
 
+  def crlf :=
+  [char.of_nat 10, char.of_nat 13]
+
   def delims :=
-  [' ', '\n', '\t', ',', ';', '|', '(', ')', '[', ']', '{', '}']
+  [' ', '\t', ',', ';', '|', '(', ')', '[', ']', '{', '}'] ++ crlf
+
+  def filter_string : string → string :=
+  string.filter (∉ crlf) ∘ string.trim char.is_punctuation
 
   def get_urls (text : string) : list string :=
   list.filter_map
     (λ word, sum.cases_on (run_string Url word)
-      (λ _, none) (some ∘ string.trim char.is_punctuation)) $
+      (λ _, none) (some ∘ filter_string)) $
         text.split (∈ delims)
 
   def conf : curl_conf :=
