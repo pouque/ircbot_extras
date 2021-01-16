@@ -143,7 +143,7 @@ namespace urls
   def get_title_of_tokens : list string → option string
   | (start :: content :: close :: tl) :=
     if start = "title" ∧ close = "/title" then
-      some (string.filter (∈ crlf) content)
+      some (string.filter (∉ crlf) content)
     else get_title_of_tokens (content :: close :: tl)
   | (hd :: tl) := get_title_of_tokens tl
   | [] := none
