@@ -116,13 +116,10 @@ namespace urls
   def delims :=
   [' ', '\t', ',', ';', '|', '(', ')', '[', ']', '{', '}'] ++ crlf
 
-  def filter_string : string → string :=
-  string.filter (∉ crlf) ∘ string.trim char.is_punctuation
-
   def get_urls (text : string) : list string :=
   list.filter_map
     (λ word, sum.cases_on (run_string Url word)
-      (λ _, none) (some ∘ filter_string)) $
+      (λ _, none) (some ∘ string.trim char.is_punctuation)) $
         text.split (∈ delims)
 
   def conf : curl_conf :=
@@ -145,7 +142,8 @@ namespace urls
 
   def get_title_of_tokens : list string → option string
   | (start :: content :: close :: tl) :=
-    if start = "title" ∧ close = "/title" then some content
+    if start = "title" ∧ close = "/title" then
+      some (string.filter (∈ crlf) content)
     else get_title_of_tokens (content :: close :: tl)
   | (hd :: tl) := get_title_of_tokens tl
   | [] := none
