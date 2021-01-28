@@ -22,20 +22,20 @@ meta def cases_trivial : tactic unit :=
 
 def exceptions := [ "fedor_rus", "fedor" ]
 
-def messages : list irc_text :=
-  login.login_messages bot_nickname ident ++
-  [ join "#chlor",
-    privmsg "#chlor" "Аниме придумал Сатана.",
+def after_login : list irc_text :=
+  [ join "#chlor", privmsg "#chlor" "Аниме придумал Сатана.",
     mode bot_nickname "+B" ]
 
 def my_bot_info : bot_info :=
-bot_info.mk bot_nickname (by cases_trivial) ident server port messages
+bot_info.mk bot_nickname (by cases_trivial) ident server port
+  (login.login_messages bot_nickname ident)
 
 def my_funcs (countries : list (string × string))
   (greetings : list string) : list bot_function :=
   [ modules.ping_pong.ping_pong,
     modules.print_date.print_date,
     modules.admin.join_channel,
+    login.no_login my_bot_info after_login,
     ircbot_external.penis, ircbot_external.jew, ircbot_external.profile,
     ircbot_external.detect exceptions,
     ircbot_external.client,
