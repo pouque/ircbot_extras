@@ -23,8 +23,8 @@ meta def cases_trivial : tactic unit :=
 def exceptions := [ "fedor_rus", "fedor" ]
 
 def after_login : list irc_text :=
-  [ join "#chlor", privmsg "#chlor" "Аниме придумал Сатана.",
-    mode bot_nickname "+B" ]
+[ join "#chlor", privmsg "#chlor" "Аниме придумал Сатана.",
+  mode bot_nickname "+B" ]
 
 def my_bot_info : bot_info :=
 bot_info.mk bot_nickname (by cases_trivial) ident server port
@@ -32,20 +32,20 @@ bot_info.mk bot_nickname (by cases_trivial) ident server port
 
 def my_funcs (countries : list (string × string))
   (greetings : list string) : list bot_function :=
-  [ modules.ping_pong.ping_pong,
-    modules.print_date.print_date,
-    modules.admin.join_channel,
-    login.no_login my_bot_info after_login,
-    ircbot_external.penis, ircbot_external.jew, ircbot_external.profile,
-    ircbot_external.detect exceptions,
-    ircbot_external.client,
-    ircbot_external.capital countries,
-    ircbot_external.sieg greetings exceptions my_bot_info.nickname,
-    ircbot_external.gruss greetings my_bot_info.nickname,
-    ircbot_external.urls,
-    ircbot_external.moveton,
-    ircbot_external.weather,
-    relogin ]
+[ modules.ping_pong.ping_pong,
+  modules.print_date.print_date,
+  modules.admin.join_channel,
+  login.no_login my_bot_info after_login,
+  ircbot_external.penis, ircbot_external.jew, ircbot_external.profile,
+  ircbot_external.detect exceptions,
+  ircbot_external.client,
+  ircbot_external.capital countries,
+  ircbot_external.sieg greetings exceptions my_bot_info.nickname,
+  ircbot_external.gruss greetings my_bot_info.nickname,
+  ircbot_external.urls,
+  ircbot_external.moveton,
+  ircbot_external.weather,
+  relogin ]
 
 def my_bot (countries : list (string × string))
   (greetings : list string) : bot :=
@@ -60,4 +60,4 @@ def greetings_file := "greetings.txt"
 def main := do
   countries ← ircbot_external.capital.read_db countries_file,
   greetings ← ircbot_external.sieg.read_greetings greetings_file,
-  mk_bot (my_bot countries greetings) netcat
+  mk_bot (my_bot countries greetings) std
