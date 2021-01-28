@@ -20,16 +20,14 @@ def bot_nickname : string := "leanbot"
 meta def cases_trivial : tactic unit :=
 `[ intro x, cases x ]
 
-def channels := [ "#chlor" ]
-
 def exceptions := [ "fedor_rus", "fedor" ]
 
 def messages : list irc_text :=
-  join <$> channels ++
   [ irc_text.parsed_normal
       { type := message.nick,
         text := "",
         args := [bot_nickname] },
+    join "#chlor",
     privmsg "#chlor" "Аниме придумал Сатана.",
     mode bot_nickname "+B" ]
 
