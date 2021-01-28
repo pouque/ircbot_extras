@@ -23,11 +23,8 @@ meta def cases_trivial : tactic unit :=
 def exceptions := [ "fedor_rus", "fedor" ]
 
 def messages : list irc_text :=
-  [ irc_text.parsed_normal
-      { type := message.nick,
-        text := "",
-        args := [bot_nickname] },
-    join "#chlor",
+  login.login_messages bot_nickname ident ++
+  [ join "#chlor",
     privmsg "#chlor" "Аниме придумал Сатана.",
     mode bot_nickname "+B" ]
 
