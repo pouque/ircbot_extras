@@ -10,7 +10,7 @@ open types effects support parsing login
 open parser
 
 -- constants
-def server : string := "chat.freenode.net"
+def server : string := "irc.quakenet.org"
 def port : string := "6667"
 
 def ident : string := "lean"
