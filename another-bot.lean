@@ -60,4 +60,4 @@ def greetings_file := "greetings.txt"
 def main := do
   countries ← ircbot_external.capital.read_db countries_file,
   greetings ← ircbot_external.sieg.read_greetings greetings_file,
-  mk_bot (my_bot countries greetings) std
+  mk_bot (my_bot countries greetings) netcat
