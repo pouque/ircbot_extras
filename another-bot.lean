@@ -20,22 +20,25 @@ def bot_nickname : string := "leanbot"
 meta def cases_trivial : tactic unit :=
 `[ intro x, cases x ]
 
-def channels := [ "#chlor", "#n2o", "#groupoid" ]
+def channels := [ "#chlor" ]
 
 def exceptions := [ "fedor_rus", "fedor" ]
 
 def messages : list irc_text :=
   join <$> channels ++
-  [ privmsg "#chlor" "Аниме придумал Сатана.",
+  [ irc_text.parsed_normal
+      { type := message.nick,
+        text := "",
+        args := [bot_nickname] },
+    privmsg "#chlor" "Аниме придумал Сатана.",
     mode bot_nickname "+B" ]
 
 def my_bot_info : bot_info :=
-bot_info.mk bot_nickname (by cases_trivial) ident server port
+bot_info.mk bot_nickname (by cases_trivial) ident server port messages
 
 def my_funcs (countries : list (string × string))
-  (greetings : list string) (acc : account) : list bot_function :=
+  (greetings : list string) : list bot_function :=
   [ modules.ping_pong.ping_pong,
-    sasl my_bot_info messages acc,
     modules.print_date.print_date,
     modules.admin.join_channel,
     ircbot_external.penis, ircbot_external.jew, ircbot_external.profile,
@@ -50,8 +53,8 @@ def my_funcs (countries : list (string × string))
     relogin ]
 
 def my_bot (countries : list (string × string))
-  (greetings : list string) (acc : account) : bot :=
-let funcs := my_funcs countries greetings acc in
+  (greetings : list string) : bot :=
+let funcs := my_funcs countries greetings in
 { info := my_bot_info,
   funcs := modules.help.help funcs :: funcs,
   fix := ⟨tt, ff⟩ }
@@ -60,11 +63,6 @@ def countries_file := "countries.csv"
 def greetings_file := "greetings.txt"
 
 def main := do
-  args ← io.cmdline_args,
   countries ← ircbot_external.capital.read_db countries_file,
   greetings ← ircbot_external.sieg.read_greetings greetings_file,
-  match args with
-  | (login :: password :: []) :=
-    mk_bot (my_bot countries greetings $ account.mk login password) netcat
-  | _ := io.fail "syntax: lean --run file.lean [login] [password]"
-  end
+  mk_bot (my_bot countries greetings) netcat
